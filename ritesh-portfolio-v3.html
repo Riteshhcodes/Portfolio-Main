@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ritesh Girase — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #080810;
+  --bg2: #0d0d1a;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-pale: rgba(201,168,76,0.08);
+  --gold-border: rgba(201,168,76,0.2);
+  --white: #f0ede8;
+  --dim: #7a7a8a;
+  --card: #0f0f1e;
+  --border: rgba(255,255,255,0.07);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Outfit', sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ─── CURSOR ─── */
+.cur { width:8px; height:8px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transition:transform 0.15s, opacity 0.15s; mix-blend-mode:difference; }
+.cur-ring { width:32px; height:32px; border:1px solid var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transition:all 0.3s cubic-bezier(0.25,0.46,0.45,0.94); opacity:0.5; }
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:1; opacity:0.4;
+}
+
+/* ─── NAV ─── */
+nav {
+  position:fixed; top:0; width:100%; z-index:100;
+  padding:24px 6vw;
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid transparent;
+  transition:all 0.4s;
+}
+nav.scrolled {
+  background:rgba(8,8,16,0.9);
+  border-bottom-color:var(--border);
+  backdrop-filter:blur(20px);
+  padding:16px 6vw;
+}
+.nav-logo {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.4rem; font-weight:300;
+  color:var(--gold-light);
+  letter-spacing:3px;
+}
+.nav-links { display:flex; gap:40px; }
+.nav-links a {
+  font-size:0.75rem; font-weight:400;
+  color:var(--dim); text-decoration:none;
+  letter-spacing:2px; text-transform:uppercase;
+  transition:color 0.3s;
+}
+.nav-links a:hover { color:var(--gold-light); }
+
+/* ─── HERO ─── */
+#hero {
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  justify-content:center;
+  padding:0 6vw;
+  position:relative; overflow:hidden;
+}
+
+.hero-bg-line {
+  position:absolute; top:0; right:15vw;
+  width:1px; height:100%;
+  background:linear-gradient(180deg, transparent, var(--gold-border), transparent);
+}
+.hero-bg-circle {
+  position:absolute;
+  width:600px; height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  right:-100px; top:50%; transform:translateY(-50%);
+  pointer-events:none;
+}
+
+.hero-eyebrow {
+  display:flex; align-items:center; gap:16px;
+  margin-bottom:32px;
+  opacity:0; animation:fadeUp 0.8s ease 0.3s forwards;
+}
+.eyebrow-line { width:40px; height:1px; background:var(--gold); }
+.eyebrow-text {
+  font-size:0.72rem; font-weight:400;
+  color:var(--gold); letter-spacing:4px;
+  text-transform:uppercase;
+}
+
+.hero-name {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(3.5rem, 8vw, 7rem);
+  font-weight:300;
+  line-height:0.95;
+  letter-spacing:-1px;
+  color:var(--white);
+  opacity:0; animation:fadeUp 0.8s ease 0.5s forwards;
+}
+.hero-name .gold { color:var(--gold-light); font-style:italic; }
+
+.hero-title {
+  font-size:clamp(0.85rem, 1.5vw, 1rem);
+  font-weight:300; color:var(--dim);
+  letter-spacing:3px; text-transform:uppercase;
+  margin-top:24px; margin-bottom:40px;
+  opacity:0; animation:fadeUp 0.8s ease 0.7s forwards;
+}
+
+.hero-desc {
+  max-width:480px;
+  font-size:1rem; line-height:1.9;
+  color:rgba(240,237,232,0.6);
+  font-weight:300;
+  margin-bottom:48px;
+  opacity:0; animation:fadeUp 0.8s ease 0.9s forwards;
+}
+
+.hero-ctas {
+  display:flex; gap:20px; flex-wrap:wrap;
+  opacity:0; animation:fadeUp 0.8s ease 1.1s forwards;
+}
+.cta-primary {
+  padding:14px 36px;
+  background:var(--gold);
+  color:#080810;
+  text-decoration:none;
+  font-size:0.78rem; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase;
+  transition:all 0.3s;
+  position:relative; overflow:hidden;
+}
+.cta-primary::before {
+  content:''; position:absolute; inset:0;
+  background:var(--gold-light);
+  transform:scaleX(0); transform-origin:right;
+  transition:transform 0.3s;
+}
+.cta-primary:hover::before { transform:scaleX(1); transform-origin:left; }
+.cta-primary span { position:relative; z-index:1; }
+.cta-secondary {
+  padding:14px 36px;
+  border:1px solid var(--gold-border);
+  color:var(--gold);
+  text-decoration:none;
+  font-size:0.78rem; font-weight:400;
+  letter-spacing:2px; text-transform:uppercase;
+  transition:all 0.3s;
+}
+.cta-secondary:hover { border-color:var(--gold); background:var(--gold-pale); }
+
+.hero-scroll {
+  position:absolute; bottom:40px; left:6vw;
+  display:flex; align-items:center; gap:12px;
+  font-size:0.68rem; color:var(--dim); letter-spacing:2px; text-transform:uppercase;
+  opacity:0; animation:fadeUp 0.8s ease 1.3s forwards;
+}
+.scroll-line { width:60px; height:1px; background:var(--dim); animation:scrollAnim 2s ease-in-out infinite; }
+@keyframes scrollAnim { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(0.5); transform-origin:right;} }
+
+.hero-stats {
+  position:absolute; right:6vw; bottom:40px;
+  display:flex; gap:40px;
+  opacity:0; animation:fadeIn 1s ease 1.5s forwards;
+}
+.hstat { text-align:right; }
+.hstat-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem; font-weight:300;
+  color:var(--gold-light); line-height:1;
+}
+.hstat-lbl { font-size:0.65rem; color:var(--dim); letter-spacing:2px; text-transform:uppercase; margin-top:4px; }
+
+/* ─── SECTIONS ─── */
+section { padding:120px 6vw; position:relative; }
+
+.sec-eyebrow {
+  display:flex; align-items:center; gap:16px; margin-bottom:16px;
+}
+.sec-eyebrow-line { width:30px; height:1px; background:var(--gold); }
+.sec-eyebrow-text { font-size:0.68rem; color:var(--gold); letter-spacing:4px; text-transform:uppercase; }
+
+.sec-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem, 4vw, 3.5rem);
+  font-weight:300; line-height:1.1;
+  color:var(--white); margin-bottom:64px;
+}
+.sec-title em { font-style:italic; color:var(--gold-light); }
+
+/* ─── ABOUT ─── */
+#about { background:var(--bg2); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+
+.about-left p {
+  font-size:1rem; line-height:2; color:rgba(240,237,232,0.65);
+  font-weight:300; margin-bottom:20px;
+}
+.about-left p span { color:var(--gold-light); font-weight:400; }
+
+.about-info { margin-top:40px; display:flex; flex-direction:column; gap:0; }
+.info-row {
+  display:flex; gap:24px;
+  padding:14px 0; border-bottom:1px solid var(--border);
+  font-size:0.82rem;
+}
+.info-key { color:var(--dim); min-width:100px; letter-spacing:1px; }
+.info-val { color:var(--white); }
+
+.about-right { padding-top:8px; }
+.terminal-card {
+  background:#060612;
+  border:1px solid var(--gold-border);
+  overflow:hidden;
+}
+.terminal-bar {
+  padding:12px 16px;
+  background:rgba(201,168,76,0.06);
+  border-bottom:1px solid var(--gold-border);
+  display:flex; align-items:center; gap:8px;
+}
+.t-dot { width:10px; height:10px; border-radius:50%; }
+.t-dot.r{background:#ff5f57;} .t-dot.y{background:#ffbd2e;} .t-dot.g{background:#28ca41;}
+.t-title { margin-left:8px; font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--dim); }
+.terminal-body { padding:24px; font-family:'DM Mono',monospace; font-size:0.8rem; line-height:2.2; }
+.t-p { color:var(--gold); } .t-c { color:rgba(240,237,232,0.8); }
+.t-g { color:#4ade80; } .t-b { color:#60a5fa; } .t-d { color:var(--dim); }
+.t-cursor { display:inline-block; width:7px; height:14px; background:var(--gold); animation:blink 1s step-end infinite; vertical-align:middle; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ─── SKILLS ─── */
+#skills {}
+.skills-layout { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+.skill-block {
+  padding:40px;
+  border:1px solid var(--border);
+  transition:all 0.3s;
+  position:relative; overflow:hidden;
+}
+.skill-block::before {
+  content:''; position:absolute;
+  top:0; left:0; width:2px; height:0;
+  background:var(--gold);
+  transition:height 0.4s ease;
+}
+.skill-block:hover::before { height:100%; }
+.skill-block:hover { border-color:var(--gold-border); background:var(--gold-pale); }
+.skill-cat {
+  font-size:0.65rem; color:var(--gold); letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:20px;
+}
+.skill-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem; font-weight:400;
+  color:var(--white); margin-bottom:16px;
+}
+.skill-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.stag {
+  font-size:0.72rem; padding:4px 12px;
+  border:1px solid var(--border); color:var(--dim);
+  letter-spacing:1px;
+  transition:all 0.2s;
+}
+.skill-block:hover .stag { border-color:var(--gold-border); color:rgba(240,237,232,0.7); }
+
+/* ─── PROJECTS ─── */
+#projects { background:var(--bg2); }
+.projects-list { display:flex; flex-direction:column; gap:0; }
+.project-item {
+  display:grid; grid-template-columns:80px 1fr auto;
+  gap:32px; align-items:start;
+  padding:40px 0; border-bottom:1px solid var(--border);
+  transition:all 0.3s;
+  cursor:default;
+}
+.project-item:first-child { border-top:1px solid var(--border); }
+.project-item:hover { padding-left:16px; }
+.project-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem; font-weight:300;
+  color:var(--gold-border); line-height:1;
+  transition:color 0.3s;
+}
+.project-item:hover .project-num { color:var(--gold); }
+.project-body {}
+.project-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:400;
+  color:var(--white); margin-bottom:10px;
+  transition:color 0.3s;
+}
+.project-item:hover .project-name { color:var(--gold-light); }
+.project-desc { font-size:0.85rem; color:var(--dim); line-height:1.8; max-width:560px; margin-bottom:16px; font-weight:300; }
+.project-stack { display:flex; gap:8px; flex-wrap:wrap; }
+.pstag { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--gold); background:var(--gold-pale); padding:3px 10px; border:1px solid var(--gold-border); }
+.project-arrow { font-size:1.2rem; color:var(--dim); transition:all 0.3s; padding-top:8px; }
+.project-item:hover .project-arrow { color:var(--gold); transform:translate(4px,-4px); }
+
+/* ─── CERTS ─── */
+.certs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1px; background:var(--border); }
+.cert-item {
+  background:var(--bg);
+  padding:32px;
+  transition:all 0.3s;
+  position:relative; overflow:hidden;
+}
+.cert-item::after {
+  content:''; position:absolute;
+  bottom:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.4s ease;
+}
+.cert-item:hover::after { transform:scaleX(1); }
+.cert-item:hover { background:var(--gold-pale); }
+.cert-icon { font-size:1.8rem; margin-bottom:16px; }
+.cert-name {
+  font-size:0.9rem; font-weight:500;
+  color:var(--white); margin-bottom:6px;
+}
+.cert-org { font-size:0.75rem; color:var(--gold); margin-bottom:4px; letter-spacing:0.5px; }
+.cert-date { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--dim); }
+.cert-badge {
+  position:absolute; top:16px; right:16px;
+  font-size:0.58rem; padding:3px 8px;
+  border:1px solid var(--gold-border); color:var(--gold);
+  letter-spacing:1px; text-transform:uppercase;
+}
+
+/* ─── CONTACT ─── */
+#contact {
+  text-align:center;
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+}
+.contact-big {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:300; line-height:1;
+  color:var(--white); margin-bottom:32px;
+}
+.contact-big em { color:var(--gold-light); font-style:italic; }
+.contact-sub { font-size:0.9rem; color:var(--dim); max-width:400px; margin:0 auto 48px; line-height:1.8; font-weight:300; }
+.contact-links { display:flex; justify-content:center; gap:32px; flex-wrap:wrap; margin-bottom:64px; }
+.contact-link {
+  display:flex; align-items:center; gap:10px;
+  font-size:0.78rem; color:var(--dim);
+  text-decoration:none; letter-spacing:2px; text-transform:uppercase;
+  transition:color 0.3s; padding:12px 0;
+  border-bottom:1px solid transparent;
+}
+.contact-link:hover { color:var(--gold); border-bottom-color:var(--gold); }
+.contact-link-icon { font-size:1rem; }
+.contact-cta {
+  display:inline-block; padding:18px 52px;
+  background:transparent; border:1px solid var(--gold);
+  color:var(--gold); text-decoration:none;
+  font-size:0.78rem; font-weight:400;
+  letter-spacing:3px; text-transform:uppercase;
+  transition:all 0.3s; position:relative; overflow:hidden;
+}
+.contact-cta::before {
+  content:''; position:absolute; inset:0;
+  background:var(--gold); transform:scaleY(0); transform-origin:bottom;
+  transition:transform 0.3s;
+}
+.contact-cta:hover::before { transform:scaleY(1); }
+.contact-cta:hover { color:#080810; }
+.contact-cta span { position:relative; z-index:1; }
+
+/* ─── FOOTER ─── */
+footer {
+  padding:32px 6vw;
+  border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.footer-logo {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem; font-weight:300;
+  color:var(--dim); letter-spacing:3px;
+}
+.footer-copy { font-size:0.68rem; color:var(--dim); letter-spacing:1px; }
+
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.1s; }
+.reveal-delay-2 { transition-delay:0.2s; }
+.reveal-delay-3 { transition-delay:0.3s; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ─── DIVIDER ─── */
+.gold-divider {
+  width:100%; height:1px;
+  background:linear-gradient(90deg, transparent, var(--gold-border), transparent);
+}
+
+/* ─── MOBILE ─── */
+@media(max-width:768px) {
+  nav { padding:20px 5vw; }
+  .nav-links { display:none; }
+  section { padding:80px 5vw; }
+  .about-grid { grid-template-columns:1fr; gap:48px; }
+  .skills-layout { grid-template-columns:1fr; }
+  .project-item { grid-template-columns:60px 1fr; }
+  .project-arrow { display:none; }
+  .hero-stats { display:none; }
+  .contact-links { flex-direction:column; align-items:center; gap:16px; }
+  footer { flex-direction:column; gap:8px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">R · G</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#certs">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-bg-circle"></div>
+
+  <div class="hero-eyebrow">
+    <div class="eyebrow-line"></div>
+    <div class="eyebrow-text">B.Tech ECE · SVKM's COE, Shirpur</div>
+  </div>
+
+  <h1 class="hero-name">
+    Ritesh<br/><span class="gold">Girase</span>
+  </h1>
+
+  <div class="hero-title">
+    Web Developer &nbsp;·&nbsp; Cybersecurity Enthusiast &nbsp;·&nbsp; AI/ML Explorer
+  </div>
+
+  <p class="hero-desc">
+    Building at the intersection of elegant design and cutting-edge technology. From browser-based games to cybersecurity tools — crafted with precision and purpose.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#projects" class="cta-primary"><span>View Projects</span></a>
+    <a href="#contact" class="cta-secondary">Get In Touch</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-num">5+</div>
+      <div class="hstat-lbl">Certifications</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">3+</div>
+      <div class="hstat-lbl">Projects</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">2nd</div>
+      <div class="hstat-lbl">Year B.Tech</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-eyebrow reveal">
+    <div class="sec-eyebrow-line"></div>
+    <div class="sec-eyebrow-text">01 — About</div>
+  </div>
+  <h2 class="sec-title reveal">Crafting code with<br/><em>purpose & precision</em></h2>
+
+  <div class="about-grid">
+    <div class="about-left">
+      <p class="reveal">I'm <span>Ritesh Jitendra Girase</span>, a 2nd-year Electronics & Computer Engineering student at SVKM's College of Engineering, Shirpur — where circuits meet code and creativity meets computation.</p>
+      <p class="reveal reveal-delay-1">My work spans <span>web development</span>, <span>cybersecurity</span>, and <span>AI/ML</span> — building systems that are not just functional, but memorable. I believe great software is a craft, and every line of code is an opportunity to do it right.</p>
+      <p class="reveal reveal-delay-2">From building Canvas-based games to designing animated festival assets, from OSINT investigations to n8n automation pipelines — I bring full-stack curiosity to everything I touch.</p>
+      <div class="about-info reveal reveal-delay-3">
+        <div class="info-row"><span class="info-key">College</span><span class="info-val">SVKM's COE, Shirpur</span></div>
+        <div class="info-row"><span class="info-key">Branch</span><span class="info-val">Electronics & Computer Engineering</span></div>
+        <div class="info-row"><span class="info-key">CGPA</span><span class="info-val">7.0 – 7.5</span></div>
+        <div class="info-row"><span class="info-key">Email</span><span class="info-val">riteshgirase77@gmail.com</span></div>
+        <div class="info-row"><span class="info-key">Status</span><span class="info-val" style="color:#4ade80">● Available for opportunities</span></div>
+      </div>
+    </div>
+
+    <div class="about-right reveal">
+      <div class="terminal-card">
+        <div class="terminal-bar">
+          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+          <span class="t-title">ritesh@portfolio ~ %</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-p">$ </span><span class="t-c">cat profile.json</span></div>
+          <div class="t-d">{</div>
+          <div>&nbsp;&nbsp;<span class="t-b">"name"</span><span class="t-d">: </span><span class="t-g">"Ritesh Girase"</span><span class="t-d">,</span></div>
+          <div>&nbsp;&nbsp;<span class="t-b">"role"</span><span class="t-d">: </span><span class="t-g">"Web Dev + Cybersec"</span><span class="t-d">,</span></div>
+          <div>&nbsp;&nbsp;<span class="t-b">"interests"</span><span class="t-d">: [</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-g">"web dev"</span><span class="t-d">,</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-g">"cybersecurity"</span><span class="t-d">,</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-g">"AI / ML"</span><span class="t-d">,</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-g">"automation"</span></div>
+          <div>&nbsp;&nbsp;<span class="t-d">],</span></div>
+          <div>&nbsp;&nbsp;<span class="t-b">"github"</span><span class="t-d">: </span><span class="t-g">"@Riteshhcodes"</span></div>
+          <div class="t-d">}</div>
+          <br/>
+          <div><span class="t-p">$ </span><span class="t-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-eyebrow reveal">
+    <div class="sec-eyebrow-line"></div>
+    <div class="sec-eyebrow-text">02 — Skills</div>
+  </div>
+  <h2 class="sec-title reveal">Tools of the<br/><em>craft</em></h2>
+
+  <div class="skills-layout">
+    <div class="skill-block reveal">
+      <div class="skill-cat">Frontend</div>
+      <div class="skill-name">Web Development</div>
+      <div class="skill-tags">
+        <span class="stag">HTML5</span><span class="stag">CSS3</span>
+        <span class="stag">JavaScript</span><span class="stag">Canvas API</span>
+        <span class="stag">DOM Manipulation</span><span class="stag">CSS Animations</span>
+        <span class="stag">Responsive Design</span>
+      </div>
+    </div>
+    <div class="skill-block reveal reveal-delay-1">
+      <div class="skill-cat">Security</div>
+      <div class="skill-name">Cybersecurity</div>
+      <div class="skill-tags">
+        <span class="stag">Kali Linux</span><span class="stag">Nmap</span>
+        <span class="stag">OSINT</span><span class="stag">CTF Challenges</span>
+        <span class="stag">TryHackMe</span><span class="stag">Network Recon</span>
+      </div>
+    </div>
+    <div class="skill-block reveal reveal-delay-2">
+      <div class="skill-cat">Languages</div>
+      <div class="skill-name">Programming</div>
+      <div class="skill-tags">
+        <span class="stag">Python</span><span class="stag">C / C++</span>
+        <span class="stag">JavaScript</span><span class="stag">Bash</span>
+      </div>
+    </div>
+    <div class="skill-block reveal reveal-delay-3">
+      <div class="skill-cat">Tools & AI</div>
+      <div class="skill-name">Design & Automation</div>
+      <div class="skill-tags">
+        <span class="stag">Figma</span><span class="stag">Canva</span>
+        <span class="stag">n8n Automation</span><span class="stag">Git & GitHub</span>
+        <span class="stag">Antigravity AI</span><span class="stag">RAG / LLMs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-eyebrow reveal">
+    <div class="sec-eyebrow-line"></div>
+    <div class="sec-eyebrow-text">03 — Projects</div>
+  </div>
+  <h2 class="sec-title reveal">Selected<br/><em>works</em></h2>
+
+  <div class="projects-list">
+    <div class="project-item reveal">
+      <div class="project-num">01</div>
+      <div class="project-body">
+        <div class="project-name">BugUs — Debug or Die</div>
+        <div class="project-desc">Browser-based Among Us-inspired game with neon cyberpunk aesthetics. Engineered a custom Canvas rendering engine, two-player keyboard controls, and debugging-themed gameplay — all in a single HTML file.</div>
+        <div class="project-stack">
+          <span class="pstag">HTML5</span><span class="pstag">CSS3</span><span class="pstag">JavaScript</span><span class="pstag">Canvas API</span><span class="pstag">Game Design</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item reveal">
+      <div class="project-num">02</div>
+      <div class="project-body">
+        <div class="project-name">SecureNet — Cybersecurity Toolkit</div>
+        <div class="project-desc">Full-stack security toolkit combining Python password analysis, network port scanning, and Java cryptographic hashing (SHA-256/512) — with a Matrix-themed interactive web UI.</div>
+        <div class="project-stack">
+          <span class="pstag">Python</span><span class="pstag">Java</span><span class="pstag">HTML/CSS/JS</span><span class="pstag">Cybersecurity</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item reveal">
+      <div class="project-num">03</div>
+      <div class="project-body">
+        <div class="project-name">Truck Logistics & Shipping Website</div>
+        <div class="project-desc">Fully responsive front-end website for a truck shipping and logistics company. Clean, professional UI with service listings, contact section, and mobile-first layout.</div>
+        <div class="project-stack">
+          <span class="pstag">HTML</span><span class="pstag">CSS</span><span class="pstag">JavaScript</span><span class="pstag">Responsive</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item reveal">
+      <div class="project-num">04</div>
+      <div class="project-body">
+        <div class="project-name">Rang Tarang 26 — Event Design & Tech</div>
+        <div class="project-desc">Animated HTML/CSS banners with particle animations and neon tricolor aesthetics for SVKM COE's annual cultural fest. IIT-style academic certificates generated using Python ReportLab.</div>
+        <div class="project-stack">
+          <span class="pstag">HTML/CSS</span><span class="pstag">Python</span><span class="pstag">ReportLab</span><span class="pstag">Design</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- CERTS -->
+<section id="certs" style="background:var(--bg2)">
+  <div class="sec-eyebrow reveal">
+    <div class="sec-eyebrow-line"></div>
+    <div class="sec-eyebrow-text">04 — Credentials</div>
+  </div>
+  <h2 class="sec-title reveal">Certifications &<br/><em>achievements</em></h2>
+
+  <div class="certs-grid">
+    <div class="cert-item reveal">
+      <div class="cert-icon">🛡️</div>
+      <div class="cert-name">Advent of Cyber 2025</div>
+      <div class="cert-org">TryHackMe</div>
+      <div class="cert-date">DEC 2025 · 24 CHALLENGES</div>
+      <div class="cert-badge">Verified</div>
+    </div>
+    <div class="cert-item reveal reveal-delay-1">
+      <div class="cert-icon">🏆</div>
+      <div class="cert-name">HackNova 2026 — Hackathon</div>
+      <div class="cert-org">Bharati Vidyapeeth, Navi Mumbai</div>
+      <div class="cert-date">JAN 2026 · 36-HOUR HACKATHON</div>
+      <div class="cert-badge">Participant</div>
+    </div>
+    <div class="cert-item reveal reveal-delay-2">
+      <div class="cert-icon">🔍</div>
+      <div class="cert-name">Introduction to OSINT</div>
+      <div class="cert-org">Security Blue Team</div>
+      <div class="cert-date">OCT 2025</div>
+      <div class="cert-badge">Verified</div>
+    </div>
+    <div class="cert-item reveal reveal-delay-3">
+      <div class="cert-icon">🐍</div>
+      <div class="cert-name">Python Bootcamp</div>
+      <div class="cert-org">LetsUpgrade · NSDC · GDG MAD</div>
+      <div class="cert-date">SEP 2024 · 5 DAYS</div>
+      <div class="cert-badge">Verified</div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🌐</div>
+      <div class="cert-name">HTML CSS Bootcamp</div>
+      <div class="cert-org">LetsUpgrade · NSDC · GDG MAD</div>
+      <div class="cert-date">SEP 2024 · 6 DAYS</div>
+      <div class="cert-badge">Verified</div>
+    </div>
+    <div class="cert-item reveal reveal-delay-1">
+      <div class="cert-icon">🎨</div>
+      <div class="cert-name">Rang Tarang 26 — Design & Tech</div>
+      <div class="cert-org">SVKM's College of Engineering</div>
+      <div class="cert-date">2025 – 2026</div>
+      <div class="cert-badge">Active</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-eyebrow reveal" style="justify-content:center">
+    <div class="sec-eyebrow-line"></div>
+    <div class="sec-eyebrow-text">05 — Contact</div>
+    <div class="sec-eyebrow-line"></div>
+  </div>
+  <h2 class="contact-big reveal">Let's build<br/><em>something</em><br/>together</h2>
+  <p class="contact-sub reveal">Open to collaborations, internships, and interesting projects. Let's connect.</p>
+
+  <div class="contact-links reveal">
+    <a href="mailto:riteshgirase77@gmail.com" class="contact-link">
+      <span class="contact-link-icon">✉</span> riteshgirase77@gmail.com
+    </a>
+    <a href="https://github.com/Riteshhcodes" target="_blank" class="contact-link">
+      <span class="contact-link-icon">⌥</span> GitHub
+    </a>
+    <a href="https://www.linkedin.com/in/ritesh-girase-3414562a4" target="_blank" class="contact-link">
+      <span class="contact-link-icon">in</span> LinkedIn
+    </a>
+  </div>
+
+  <a href="mailto:riteshgirase77@gmail.com" class="contact-cta reveal"><span>Send a Message →</span></a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ritesh Girase</div>
+  <div class="footer-copy">© 2026 · Crafted with precision</div>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const ring = document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx-4+'px'; cur.style.top = my-4+'px';
+});
+function animRing() {
+  rx += (mx-rx-16)*0.12; ry += (my-ry-16)*0.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform='scale(1.8)'; ring.style.opacity='0.8'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform='scale(1)'; ring.style.opacity='0.5'; });
+});
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50);
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i*60);
+  });
+}, { threshold:0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
