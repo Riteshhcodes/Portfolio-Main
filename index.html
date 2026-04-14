@@ -310,7 +310,10 @@ section { padding:120px 6vw; position:relative; }
 .project-desc { font-size:0.85rem; color:var(--dim); line-height:1.8; max-width:560px; margin-bottom:16px; font-weight:300; }
 .project-stack { display:flex; gap:8px; flex-wrap:wrap; }
 .pstag { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--gold); background:var(--gold-pale); padding:3px 10px; border:1px solid var(--gold-border); }
-.project-arrow { font-size:1.2rem; color:var(--dim); transition:all 0.3s; padding-top:8px; }
+.project-arrow {
+  font-size:1.2rem; color:var(--dim); transition:all 0.3s; padding-top:8px;
+  text-decoration:none; display:block;
+}
 .project-item:hover .project-arrow { color:var(--gold); transform:translate(4px,-4px); }
 
 /* ─── CERTS ─── */
@@ -484,7 +487,8 @@ footer {
       <div class="hstat-lbl">Certifications</div>
     </div>
     <div class="hstat">
-      <div class="hstat-num">3+</div>
+      <!-- ✅ UPDATED: 3+ → 5+ Projects -->
+      <div class="hstat-num">5+</div>
       <div class="hstat-lbl">Projects</div>
     </div>
     <div class="hstat">
@@ -554,14 +558,15 @@ footer {
   <h2 class="sec-title reveal">Tools of the<br/><em>craft</em></h2>
 
   <div class="skills-layout">
+    <!-- ✅ UPDATED: Added React, Node.js, Socket.io, Vite -->
     <div class="skill-block reveal">
       <div class="skill-cat">Frontend</div>
       <div class="skill-name">Web Development</div>
       <div class="skill-tags">
         <span class="stag">HTML5</span><span class="stag">CSS3</span>
-        <span class="stag">JavaScript</span><span class="stag">Canvas API</span>
-        <span class="stag">DOM Manipulation</span><span class="stag">CSS Animations</span>
-        <span class="stag">Responsive Design</span>
+        <span class="stag">JavaScript</span><span class="stag">React</span>
+        <span class="stag">Vite</span><span class="stag">Tailwind CSS</span>
+        <span class="stag">Canvas API</span><span class="stag">Responsive Design</span>
       </div>
     </div>
     <div class="skill-block reveal reveal-delay-1">
@@ -581,12 +586,14 @@ footer {
         <span class="stag">JavaScript</span><span class="stag">Bash</span>
       </div>
     </div>
+    <!-- ✅ UPDATED: Added Node.js, Express, Socket.io -->
     <div class="skill-block reveal reveal-delay-3">
       <div class="skill-cat">Tools & AI</div>
-      <div class="skill-name">Design & Automation</div>
+      <div class="skill-name">Backend & Automation</div>
       <div class="skill-tags">
-        <span class="stag">Figma</span><span class="stag">Canva</span>
-        <span class="stag">n8n Automation</span><span class="stag">Git & GitHub</span>
+        <span class="stag">Node.js</span><span class="stag">Express</span>
+        <span class="stag">Socket.io</span><span class="stag">Git & GitHub</span>
+        <span class="stag">n8n Automation</span><span class="stag">Figma</span>
         <span class="stag">Antigravity AI</span><span class="stag">RAG / LLMs</span>
       </div>
     </div>
@@ -604,6 +611,7 @@ footer {
   <h2 class="sec-title reveal">Selected<br/><em>works</em></h2>
 
   <div class="projects-list">
+
     <div class="project-item reveal">
       <div class="project-num">01</div>
       <div class="project-body">
@@ -651,6 +659,20 @@ footer {
       </div>
       <div class="project-arrow">↗</div>
     </div>
+
+    <!-- ✅ NEW: SYNC-ROOM Project -->
+    <div class="project-item reveal">
+      <div class="project-num">05</div>
+      <div class="project-body">
+        <div class="project-name">SYNC-ROOM — Instant File Transfer</div>
+        <div class="project-desc">Room-based real-time file sharing platform. Users create or join a unique room code and instantly transfer files — no login, no cloud storage required. Built with a React + Vite + Tailwind frontend and a Node.js + Socket.io backend, deployed across Vercel and Render.</div>
+        <div class="project-stack">
+          <span class="pstag">React</span><span class="pstag">Vite</span><span class="pstag">TailwindCSS</span><span class="pstag">Node.js</span><span class="pstag">Socket.io</span><span class="pstag">Real-time</span>
+        </div>
+      </div>
+      <a href="https://sync-room-tau.vercel.app" target="_blank" class="project-arrow">↗</a>
+    </div>
+
   </div>
 </section>
 
